@@ -1,0 +1,15 @@
+﻿@namespace SPAClient.Components
+
+<Tag>Name = @Name</Tag>
+<input @bind-value=Name @bind-value:event="oninput" />
+
+<Tag>Date of birth = @DateOfBirth?.ToString("MMMM d, yyyy")</Tag>
+<input @bind-value=DateOfBirth @bind-value:format="yyyy-MM-dd" />
+
+@code {
+    private string Name;
+    private DateTime? DateOfBirth;
+    private decimal? BankBalance;
+
+
+}

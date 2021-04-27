@@ -30,7 +30,8 @@ namespace ApiResource
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ApiResource", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ApiResource1", Version = "v1" });
+                c.SwaggerDoc("v2", new OpenApiInfo { Title = "ApiResource2", Version = "v2" });
             });
         }
 
@@ -41,7 +42,10 @@ namespace ApiResource
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ApiResource v1"));
+                app.UseSwaggerUI(c => {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "ApiResource v1.0");
+                    c.SwaggerEndpoint("/swagger/v2/swagger.json", "ApiResource v2.0");
+                });
             }
 
             app.UseHttpsRedirection();

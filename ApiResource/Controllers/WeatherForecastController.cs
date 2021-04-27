@@ -24,6 +24,8 @@ namespace ApiResource.Controllers
         }
 
         [HttpGet]
+        [Route("get-list")]
+        [ApiExplorerSettings(GroupName = "v1")]
         public IEnumerable<WeatherForecast> Get()
         {
             var rng = new Random();
@@ -34,6 +36,13 @@ namespace ApiResource.Controllers
                 Summary = Summaries[rng.Next(Summaries.Length)]
             })
             .ToArray();
+        }
+        [HttpGet]
+        [Route("just-say-hi")]
+        [ApiExplorerSettings(GroupName = "v1")]
+        public string JustSayHi()
+        {
+            return "Hi !";
         }
     }
 }

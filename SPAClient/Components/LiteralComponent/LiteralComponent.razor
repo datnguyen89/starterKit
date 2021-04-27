@@ -1,0 +1,13 @@
+﻿@namespace SPAClient.Components
+
+@if (Visible)
+{
+    <Tag Color="blue-inverse">@Text</Tag>
+}
+@code
+{
+    [Parameter]
+    public bool Visible { get; set; } = true;
+    [Parameter]
+    public string Text { get; set; }
+}

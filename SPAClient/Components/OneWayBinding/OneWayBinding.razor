@@ -1,0 +1,12 @@
+﻿@namespace SPAClient.Components
+@inject IMyTransientService TransientService
+
+<Tag Color="orange-inverse">
+    @WaterfallProp.ToString()
+</Tag>
+<p>@TransientService.InstanceNumber</p>
+
+@code {
+    [Parameter]
+    public object WaterfallProp { get; set; } // param truyền xuống component con dưới dạng 1 prop
+}

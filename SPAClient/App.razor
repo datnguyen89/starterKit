@@ -1,0 +1,29 @@
+@inject NavigationManager NavigationManager
+
+
+<Router AppAssembly="@typeof(Program).Assembly" PreferExactMatches="@true">
+    <Found Context="routeData">
+        <RouteView RouteData="@routeData" DefaultLayout="@typeof(BasicLayout)" />
+    </Found>
+    <NotFound>
+        <LayoutView Layout="@typeof(BasicLayout)">
+            <Result Status="404"
+                    Title="404"
+                    SubTitle="Sorry, the page you visited does not exist."
+                    >
+                <Extra>
+                    <Button Type="primary" @onclick="NavigateToHome">Back Home</Button>
+                </Extra>
+            </Result>
+        </LayoutView>
+    </NotFound>
+</Router>
+<AntContainer />
+
+@code
+{ 
+    private void NavigateToHome()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+}

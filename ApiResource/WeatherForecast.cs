@@ -4,6 +4,11 @@ namespace ApiResource
 {
     public class WeatherForecast
     {
+        public WeatherForecast()
+        {
+            Date = DateTime.Now;
+            TemperatureC = 0;
+        }
         public DateTime Date { get; set; }
 
         public int TemperatureC { get; set; }

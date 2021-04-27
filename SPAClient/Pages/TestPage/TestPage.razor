@@ -1,0 +1,123 @@
+﻿@page "/test-page"
+
+<div>
+    <Divider Orientation="left">Binding Literal & Expression</Divider>
+    <OneWayBinding WaterfallProp=@propOfOneWayBinding />
+    <LiteralComponent Visible="true" Text="Truyền vào props giá trị bình thường" />
+    <ExpressionComponent Visible=@expressionComponentVisible Text=@expressionComponentText />
+
+    @*Callback events*@
+    <Divider Orientation="left">Event Callback</Divider>
+    <CallbackComponent CallBackEvent="@OnSelectedBank" BankList="@bankList" />
+    @if (selectedBank != null)
+    {
+        <p style="margin-top: 16px">Đã chọn @selectedBank.BankCode - @selectedBank.BankName <Button Type="primary" Icon="delete" @onclick="OnClearBank">Clear</Button></p>
+    }
+
+    <span>Chia hết cho 2</span>
+    <AntDesign.Progress Percent=@(LastMultipleOfTwo * 10) Status="@ProgressStatus.Active" />
+    <span>Chia hết cho 3</span>
+    <AntDesign.Progress Percent=@(LastMultipleOfThree * 10) Status="@ProgressStatus.Active" />
+    <Counter OnMultipleOfThree=@UpdateLastMultipleOfThreeValue OnMultipleOfTwoAction=@UpdateLastMultipleOfTwoValue />
+
+    @*
+        Two-way binding: naming convention
+        @bind-CurrentCounterValue : cần có prameter CurrentCounterValue và event callback CurrentCounterValueChanged (tên bắt buộc phải ...Changed)
+    *@
+    <Divider Orientation="left">Two-way Binding</Divider>
+    <TwoWayBinding @bind-CurrentCounterValue="@currentCounterValue" />
+    <Button Type="primary" @onclick="IncreaseFromParent">Increase From Parent</Button>
+
+    @*Binding Directive*@
+    <Divider Orientation="left">BindingDirective</Divider>
+    <BindingDirective />
+
+    @*Cascading value by name*@
+    <Divider Orientation="left">Cascading value by name</Divider>
+    <CascadingValueByName />
+
+    @*Task*@
+    <Divider Orientation="left">Task Test</Divider>
+    <Button Type="primary" @onclick="OnClickGet">Wait All Task Done!</Button>
+    @if (_data != null)
+    {
+        <p>page: @_data.Page - @_time</p>
+    }
+    @if (_data2 != null)
+    {
+        <p>page: @_data2.Page - @_time2</p>
+    }
+
+    @*Generated HTML Attribute*@
+    <Divider Orientation="left">Generated HTML Attribute</Divider>
+    <GeneratedHTMLAttributes />
+
+
+</div>
+
+@code {
+    private int propOfOneWayBinding = 123; // khởi tạo giá trị truyền vào cho OneWayBinding
+    private bool expressionComponentVisible = true;
+    private string expressionComponentText = "Truyền vào props dạng biểu thức thì thêm @ vào bên phải props";
+
+    // Xử lý khi callback event
+    public Bank[] bankList = { new Bank(1, "Vietcombank", "VCB"), new Bank(2, "AgriBank", "AGB"), new Bank(3, "Techcombank", "TCB") };
+    private Bank selectedBank;
+    private void OnSelectedBank(Bank bank)
+    {
+        Console.WriteLine(bank);
+        selectedBank = bank;
+    }
+    private void OnClearBank()
+    {
+        selectedBank = null;
+    }
+
+    // Test events
+    int LastMultipleOfTwo = 0;
+    int LastMultipleOfThree = 0;
+    private Task UpdateLastMultipleOfThreeValue(int value)
+    {
+        LastMultipleOfThree = value;
+        return Task.CompletedTask;
+    }
+    private void UpdateLastMultipleOfTwoValue(int value)
+    {
+        LastMultipleOfTwo = value;
+    }
+
+    // Two-way binding handle
+    private int currentCounterValue;
+    private void IncreaseFromParent()
+    {
+        currentCounterValue++;
+    }
+
+    // Task test
+    private ProductList _data;
+    private ProductList _data2;
+    private DateTime _time;
+    private DateTime _time2;
+
+    [Inject] protected IProductService ProductService { get; set; }
+    async Task getSample()
+    {
+        await Task.Delay(1000);
+        _data = await ProductService.GetCurrentProductAsync(1);
+        _time = DateTime.Now;
+        StateHasChanged();
+    }
+    async Task getSample2()
+    {
+        await Task.Delay(3000);
+        _data2 = await ProductService.GetCurrentProductAsync(2);
+        _time2 = DateTime.Now;
+        StateHasChanged();
+    }
+    void OnClickGet()
+    {
+        var task1 = Task.Factory.StartNew(getSample);
+        var task2 = Task.Factory.StartNew(getSample2);
+        Task.WaitAll(task1, task2);
+    }
+}

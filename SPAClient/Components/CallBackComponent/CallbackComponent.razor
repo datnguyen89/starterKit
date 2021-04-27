@@ -1,0 +1,29 @@
+﻿@namespace SPAClient.Components
+
+<Table TItem="Bank"
+       HidePagination="true"
+       DataSource="BankList">
+    <AntDesign.Column @bind-Field="@context.Id" />
+    <AntDesign.Column @bind-Field="@context.BankName">
+        <ChildContent>
+            <a @onclick="() => HandleClickSelectBank(context)">@context.BankName</a>
+        </ChildContent>
+    </AntDesign.Column>
+    <AntDesign.Column @bind-Field="@context.BankCode">
+        <ChildContent>
+            <Tag Color="blue">@context.BankCode</Tag>
+        </ChildContent>
+    </AntDesign.Column>
+</Table>
+
+
+@code {
+    [Parameter]
+    public Bank[] BankList { get; set; } = { new Bank(1, "Vietcombank", "VCB"), new Bank(2, "AgriBank", "AGB") };
+    [Parameter]
+    public EventCallback<Bank> CallBackEvent { get; set; }
+    private async void HandleClickSelectBank(Bank selectedBank)
+    {
+        await CallBackEvent.InvokeAsync(selectedBank);
+    }
+}

@@ -1,0 +1,16 @@
+﻿@namespace SPAClient.Components
+
+<div>
+    <br />
+    <Tag>FirstOption = @FirstOption</Tag>
+    <Tag>SecondOption = @SecondOption</Tag>
+    <Tag>Description = @Description</Tag>
+</div>
+@code {
+    [CascadingParameter(Name = "FirstOption")]
+    private bool FirstOption { get; set; }
+    [CascadingParameter(Name = "SecondOption")]
+    private bool SecondOption { get; set; }
+    [CascadingParameter(Name = "Description")]
+    private string Description { get; set; }
+}
