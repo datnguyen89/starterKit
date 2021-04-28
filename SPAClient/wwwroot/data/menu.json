@@ -1,6 +1,6 @@
 [
   {
-    "path": "/dashboard",
+    "path": "/",
     "name": "Dashboard",
     "key": "dashboard",
     "icon": "dashboard",
